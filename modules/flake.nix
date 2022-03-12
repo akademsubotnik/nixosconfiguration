@@ -1,5 +1,5 @@
 {
-  description = "A very basic flake";
+  description = "Nix flake for network configuration";
 
   outputs = { self, nixpkgs }: {
 
