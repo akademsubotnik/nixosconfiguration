@@ -15,10 +15,10 @@
                         enable = true;
                         networks = {
                                 #OpenWrt5ghz = {
-                                #       psk = "x";
+                                #       psk = "Shadow10504";
                                 #}
                                 FiOS-EL4ZU = {
-                                        psk = "x";
+                                        psk = "duty2829cub6672bid";
                                 };
                         };
                 };
