@@ -11,12 +11,14 @@
       ./modules/network.nix
     ];
 
-  #Make ready for nix flakes
-  #nix.package = pkgs.nixFlakes;
-  #nix.extraOptions = ''
-  #  experimental-features = nix-command flakes
-  #'';
-
+  #nix flakes (https://nixos.wiki/wiki/flakes#Installing_flakes)
+  nix = {
+	package = pkgs.nixUnstable; #or versioned attributes like nix_2_4
+	extraOptions = ''
+		experimental-features = nix-command flakes
+	'';
+  };
+  
 
   #KERNEL/BOOTUP#
 	boot = {
