@@ -8,7 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./modules/network.nix
+      ./modules/secrets/network.nix
     ];
 
   #nix flakes (https://nixos.wiki/wiki/flakes#Installing_flakes)
