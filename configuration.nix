@@ -97,7 +97,6 @@
   #NETWORKING#
   #/modules/network.nix#	
   #END NETWORKING#
- 
 
   #DISPLAY#
   	programs.sway = {
