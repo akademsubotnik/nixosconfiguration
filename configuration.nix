@@ -57,9 +57,6 @@
 		xserver.libinput.enable = true; # Enable touchpad support (enabled default in most desktopManager). SUPERFLUOUS WITH WAYLAND????
 	};
 
-	system.autoUpgrade.enable = true;
-	system.autoUpgrade.allowReboot = true;
-
         # This value determines the NixOS release from which the default
   	# settings for stateful data, like file locations and database versions
   	# on your system were taken. It‘s perfectly fine and recommended to leave
@@ -104,8 +101,6 @@
 	};
   #END DISPLAY#
 
-
-
   #PACKAGES#
   	nixpkgs.config = {
     		allowUnfree = true; # allow unfree packages(eg. slack)
@@ -116,7 +111,6 @@
     	firefox
     	slack
     	git
-    	element-desktop
     	#chromium
     	dpkg
     	file
@@ -149,20 +143,6 @@
 	pass
 
   	];
-
-     containers.chromium-ct = {
-       config = { 
-         #containers.chromium-ct.autostart = true;
-         config, pkgs, ... }:
-         { 
-           #services.chromium.package = pkgs.chromium;
-           #services.chromium.package = pkgs.chromium;
-           #package = {derivation /nix/store/gzx4aaqjkvd655ihd3cql586alhnpycx-chromium-96.0.4664.110.drv};
-           environment.systemPackages = with pkgs; [ screen ];
-           services.weechat.enable = true;
-         };
-     };
-
 
   #END PACKAGES#
 
