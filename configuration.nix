@@ -119,8 +119,6 @@
     	ncspot
     	spotify
     	zoom-us
-    	discord
-    	etcher
     	qbittorrent
     	unzip
     	meson
