@@ -68,20 +68,9 @@
   	# (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   	system.stateVersion = "21.11"; # Did you read the comment?
 
-        meta = {
-		maintainers = with lib.maintainers; [ gregorysmith ];
-		#doc = ./default.xml;
-	};	
-
-	#Chron job, to update channels == apt update
-	# Enable cron service
-  	services.cron = {
-    	  enable = true;
-    	  #FIGURE OUT HOW TO UPGRADE PROPERLY (EG. WITH AN APPLICATION, EG. unattended-upgrades,etc.#
-	  #systemCronJobs = [
-      	  #  "12 20 * * *      root    nix-channel --update >> /tmp/cron.log"
-    	  #];
-  	};	
+	#ToDo
+	#1. containerized applications
+	#2. how to update system, not needed because of vc flakes???
 
 	#Enable gpg#
 	programs.gnupg = {
