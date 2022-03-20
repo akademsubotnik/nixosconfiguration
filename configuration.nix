@@ -25,7 +25,6 @@
 
   #END KERNEL/BOOTUP#
 
-
   #NETWORKING#
   #/modules/secrets/network.nix
   #END NETWORKING#
