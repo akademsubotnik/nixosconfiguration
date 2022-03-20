@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   imports =
@@ -10,15 +10,6 @@
       ./hardware-configuration.nix
       ./modules/secrets/network.nix
     ];
-
-  #nix flakes (https://nixos.wiki/wiki/flakes#Installing_flakes)
-  nix = {
-  	package = pkgs.nixUnstable; #or versioned attributes like nix_2_4
-  	extraOptions = ''
-  		experimental-features = nix-command flakes
-  	'';
-  };
-  
 
   #KERNEL/BOOTUP#
 	boot = {
@@ -34,6 +25,12 @@
 
   #END KERNEL/BOOTUP#
 
+
+  #NETWORKING#
+  #/modules/secrets/network.nix
+  #END NETWORKING#
+
+
   #MISC#
   	time.timeZone = "America/New_York";
 	hardware.pulseaudio.enable = true;
@@ -47,6 +44,7 @@
   	users.users.greg = {
     		isNormalUser = true;
 		extraGroups = [ "wheel" "audio" "docker" "sway" "video" ]; # Enable ‘sudo’ for the user.
+
   	};
 
 
@@ -80,10 +78,6 @@
 
   #END MISC#
 
-  #NETWORKING#
-  #/modules/network.nix#	
-  #END NETWORKING#
-
   #DISPLAY#
   	programs.sway = {
 		enable = true;
@@ -95,54 +89,63 @@
 		
 	};
 
-	xdg.portal = {
-		enable = true;
-		wlr.enable = true;
-	};
+	xdg.portal.enable = true; 
+	xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-wlr ];
+
+
   #END DISPLAY#
 
   #PACKAGES#
-  	nixpkgs.config = {
-    		allowUnfree = true; # allow unfree packages(eg. slack)
-  	};
-  	environment.systemPackages = with pkgs; [
-    	vim
-    	wget
-    	firefox
-    	slack
-    	git
-    	#chromium
-    	dpkg
-    	file
-    	qalculate-gtk
-    	vlc
-    	ncspot
-    	spotify
-    	zoom-us
-    	qbittorrent
-    	unzip
-    	meson
-    	realvnc-vnc-viewer
-    	koreader
-    	libreoffice
-    	lynx
-    	waypipe
-    	wayvnc
-	handlr
-	waybar
-	killall
-	brightnessctl
-	kubectl
-	parted
-	gnupg
-	rng-tools
-	pinentry_curses
-	git-crypt
-	pass
+    # List packages installed in system profile. To search, run:
+    # $ nix search wget
+    nixpkgs.config.allowUnfree = true;
+    environment.systemPackages = with pkgs; [
+      vim
+      wget
+      firefox
+      slack
+      git
+      #chromium
+      dpkg
+      file
+      qalculate-gtk
+      vlc
+      ncspot
+      spotify
+      zoom-us
+      qbittorrent
+      unzip
+      meson
+      #realvnc-vnc-viewer
+      koreader
+      libreoffice
+      lynx
+      waypipe
+      wayvnc
+      handlr
+      waybar
+      killall
+      brightnessctl
+      kubectl
+      parted
+      gnupg
+      rng-tools
+      pinentry_curses
+      git-crypt
+      pass
 
-  	];
+    ];
+  #END PACKAGES
 
-  #END PACKAGES#
+  #nix flakes (https://nixos.wiki/wiki/flakes#Installing_flakes)
+  nix = {
+  	package = pkgs.nixUnstable; #or versioned attributes like nix_2_4
+  	extraOptions = ''
+  		experimental-features = nix-command flakes
+  	'';
+  };
+
+
 
 }
 
