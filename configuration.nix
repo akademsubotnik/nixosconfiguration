@@ -51,7 +51,6 @@
 		printing.enable = true;
 		sshd.enable = true;
 		flatpak.enable = true;
-		xserver.libinput.enable = true; # Enable touchpad support (enabled default in most desktopManager). SUPERFLUOUS WITH WAYLAND????
 	};
 
         # This value determines the NixOS release from which the default
@@ -74,6 +73,53 @@
 	  };
 	};
 	#End Enable gpg#
+	
+	#NeoVim#
+        programs.neovim = {
+          enable = true;
+          defaultEditor = true;
+	  #package = pkgs.neovim-nightly;
+	  viAlias = true;
+          configure = {
+	    customRC = ''
+	      set undofile
+	    '';
+	  packages.myVimPackage = with pkgs.vimPlugins; {
+
+          start = [ vim-nix ];
+          #start = [
+          #(nvim-treesitter.withPlugins (
+          #  plugins: with plugins; [
+          #    tree-sitter-nix
+          #    tree-sitter-python
+          #  ]
+          #))
+          #YouCompleteMe ];
+
+
+	  };
+
+	  };
+	  
+	};
+	#End NeoVim#
+
+        #Git#
+        programs.git = {
+          enable = true;
+          config = {
+            user.name = "gregg00";
+	    user.email = "gregjsmith@gmx.com";
+	  };
+	};
+	#End Git#
+
+        environment.shellAliases = {
+          ll = "ls -l";
+          h = "history";
+        };
+
+
 
   #END MISC#
 
@@ -99,12 +145,10 @@
     # $ nix search wget
     nixpkgs.config.allowUnfree = true;
     environment.systemPackages = with pkgs; [
-      vim
       wget
       firefox
       slack
-      git
-      #chromium
+      chromium
       dpkg
       file
       qalculate-gtk
@@ -132,6 +176,8 @@
       pinentry_curses
       git-crypt
       pass
+      python
+      neovim
 
     ];
   #END PACKAGES
