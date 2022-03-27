@@ -177,7 +177,6 @@
       git-crypt
       pass
       python
-      neovim
 
     ];
   #END PACKAGES
