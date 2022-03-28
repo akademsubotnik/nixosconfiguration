@@ -78,7 +78,6 @@
         programs.neovim = {
           enable = true;
           defaultEditor = true;
-	  #package = pkgs.neovim-nightly;
 	  viAlias = true;
           configure = {
 	    customRC = ''
@@ -86,15 +85,7 @@
 	    '';
 	  packages.myVimPackage = with pkgs.vimPlugins; {
 
-          start = [ vim-nix ];
-          #start = [
-          #(nvim-treesitter.withPlugins (
-          #  plugins: with plugins; [
-          #    tree-sitter-nix
-          #    tree-sitter-python
-          #  ]
-          #))
-          #YouCompleteMe ];
+          start = [ YouCompleteMe ];
 
 
 	  };
