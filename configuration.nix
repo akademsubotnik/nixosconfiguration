@@ -34,10 +34,10 @@
   	time.timeZone = "America/New_York";
 	hardware.pulseaudio.enable = true;
 	nixpkgs.config.pulseaudio = true;
-  	virtualisation.docker.enable = true;
+  	#virtualisation.docker.enable = true;
 	programs.waybar.enable = true; #taskbar for wayland
-	virtualisation.virtualbox.host.enable = true;
-   	users.extraGroups.vboxusers.members = [ "greg" ];
+	#virtualisation.virtualbox.host.enable = true;
+   	#users.extraGroups.vboxusers.members = [ "greg" ];
 
 
   	users.users.greg = {
@@ -80,12 +80,14 @@
           defaultEditor = true;
 	  viAlias = true;
           configure = {
+	    #.vimrc goes in "customRC"
 	    customRC = ''
-	      set undofile
+	      set number
+	      let g:rainbow_active = 1
 	    '';
 	  packages.myVimPackage = with pkgs.vimPlugins; {
 
-          start = [ YouCompleteMe ];
+          start = [ YouCompleteMe rainbow ];
 
 
 	  };
@@ -106,6 +108,7 @@
 	#End Git#
 
         environment.shellAliases = {
+	  ls = "ls --color=auto";
           ll = "ls -l";
           h = "history";
         };
