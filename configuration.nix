@@ -171,6 +171,7 @@
       git-crypt
       pass
       python
+      traceroute
 
     ];
   #END PACKAGES
