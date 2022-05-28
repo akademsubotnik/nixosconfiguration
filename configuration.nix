@@ -31,7 +31,7 @@
 
 
   #MISC#
-  	time.timeZone = "America/New_York";
+  	time.timeZone = "Europe/Kiev";
 	hardware.pulseaudio.enable = true;
 	nixpkgs.config.pulseaudio = true;
   	#virtualisation.docker.enable = true;
@@ -52,6 +52,8 @@
 		sshd.enable = true;
 		flatpak.enable = true;
 	};
+	services.xserver.libinput.mouse.accelSpeed = "-25.5";
+	services.xserver.synaptics.accelFactor = "0.001";
 
         # This value determines the NixOS release from which the default
   	# settings for stateful data, like file locations and database versions
@@ -172,7 +174,8 @@
       pass
       python
       traceroute
-
+      unar
+      cryptsetup
     ];
   #END PACKAGES
 
