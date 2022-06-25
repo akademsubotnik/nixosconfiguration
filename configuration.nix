@@ -7,134 +7,159 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./modules/system/hardware-configuration.nix
-      ./modules/secrets/network.nix
+      ./hardware-configuration.nix
     ];
 
-  #KERNEL/BOOTUP#
-	boot = {
-		#Use the systemd-boot EFI boot loader (loader)
-		loader = {
-			systemd-boot.enable = true;
-			efi.canTouchEfiVariables = true;
-		};
-		blacklistedKernelModules = [ "e1000e" ];
-		kernelModules = [ "binder_linux" ];
-		kernelPackages = pkgs.linuxPackages_xanmod;
-	};
+#KERNEL/BOOTUP#
 
-  #END KERNEL/BOOTUP#
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.loader.grub = {
+    enable = true;
+    device = "nodev";
+    version = 2;
+    efiSupport = true;
+    enableCryptodisk = true;
+  };
 
-  #NETWORKING#
-  #/modules/secrets/network.nix
-  #END NETWORKING#
+  boot.initrd = {
+    luks.devices."root" = {
+      device = "/dev/disk/by-uuid/eee08ded-d73d-478f-b593-c47c62646cfe"; # UUID for /dev/nvme01np2
+      preLVM = true;
+      keyFile = "/keyfile0.bin";
+      allowDiscards = true;
+    };
+    secrets = {
+      # Create /mnt/etc/secrets/initrd directory and copy keys to it
+      "keyfile0.bin" = "/etc/secrets/initrd/keyfile0.bin";
+    };
+};
 
+  boot.blacklistedKernelModules = [ "e1000e" ];
+  boot.kernelModules = [ "binder_linux" ];
+  boot.kernelPackages = pkgs.linuxPackages_xanmod;
+
+#END KERNEL/BOOTUP#
 
   #MISC#
-  	time.timeZone = "Europe/Kiev";
-	hardware.pulseaudio.enable = true;
-	nixpkgs.config.pulseaudio = true;
-  	#virtualisation.docker.enable = true;
-	programs.waybar.enable = true; #taskbar for wayland
-	#virtualisation.virtualbox.host.enable = true;
-   	#users.extraGroups.vboxusers.members = [ "greg" ];
+
+    # Set your time zone.
+    time.timeZone = "Europe/Kiev";
+    hardware.pulseaudio.enable = true;
+    nixpkgs.config.pulseaudio = true;
+    programs.waybar.enable = true; #taskbar for wayland
 
 
-  	users.users.greg = {
-    		isNormalUser = true;
-		extraGroups = [ "wheel" "audio" "docker" "sway" "video" ]; # Enable ‘sudo’ for the user.
-
-  	};
-
-
-	services = {
-		printing.enable = true;
-		sshd.enable = true;
-		flatpak.enable = true;
-	};
-	services.xserver.libinput.mouse.accelSpeed = "-25.5";
-	services.xserver.synaptics.accelFactor = "0.001";
-
-        # This value determines the NixOS release from which the default
-  	# settings for stateful data, like file locations and database versions
-  	# on your system were taken. It‘s perfectly fine and recommended to leave
-  	# this value at the release version of the first install of this system.
-  	# Before changing this value read the documentation for this option
-  	# (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  	system.stateVersion = "21.11"; # Did you read the comment?
-
-	#ToDo
-	#1. containerized applications
-	#2. how to update system, not needed because of vc flakes???
-
-	#Enable gpg#
-	programs.gnupg = {
-	  agent = {
-	    enable = true;
-	    pinentryFlavor = "curses";
-	  };
-	};
-	#End Enable gpg#
-	
-	#NeoVim#
-        programs.neovim = {
-          enable = true;
-          defaultEditor = true;
-	  viAlias = true;
-          configure = {
-	    #.vimrc goes in "customRC"
-	    customRC = ''
-	      set number
-	      let g:rainbow_active = 1
-	    '';
-	  packages.myVimPackage = with pkgs.vimPlugins; {
-
-          start = [ YouCompleteMe rainbow ];
+    users.users.greg = {
+          isNormalUser = true;
+          extraGroups = [ "wheel" "audio" "sway" "video" ]; # Enable ‘sudo’ for the user.
+    };
 
 
-	  };
 
-	  };
-	  
-	};
-	#End NeoVim#
+
+     #NeoVim#
+     programs.neovim = {
+        enable = true;
+        defaultEditor = true;
+        viAlias = true;
+        configure = {
+          #.vimrc goes in "customRC"
+          customRC = ''
+            set number
+            let g:rainbow_active = 1
+          '';
+      packages.myVimPackage = with pkgs.vimPlugins; {
+
+      start = [ YouCompleteMe rainbow ];
+
+      };
+
+      };
+
+      };
+      #End NeoVim#
+
+
+      # This value determines the NixOS release from which the default
+      # settings for stateful data, like file locations and database versions
+      # on your system were taken. It‘s perfectly fine and recommended to leave
+      # this value at the release version of the first install of this system.
+      # Before changing this value read the documentation for this option
+      # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+      system.stateVersion = "21.11"; # Did you read the comment?
+      system.autoUpgrade.enable = true; #Enable unnatended upgrades to keep applications up to date and secure #FOR SECURITY #will check pkgs for updates 1x day
 
         #Git#
         programs.git = {
           enable = true;
           config = {
             user.name = "gregg00";
-	    user.email = "gregjsmith@gmx.com";
-	  };
-	};
-	#End Git#
+            user.email = "gregjsmith@gmx.com";
+          };
+        };
+        #End Git#
 
         environment.shellAliases = {
-	  ls = "ls --color=auto";
+          ls = "ls --color=auto";
           ll = "ls -l";
           h = "history";
         };
 
+        services = {
+                printing.enable = true;
+                openssh.enable = true;
+                openssh.permitRootLogin = "no";
+                openssh.passwordAuthentication = true;
+                flatpak.enable = true;
+        };
 
+        #Enable gpg#
+        programs.gnupg = {
+          agent = {
+            enable = true;
+            pinentryFlavor = "curses";
+          };
+        };
+        #End Enable gpg#
 
   #END MISC#
 
-  #DISPLAY#
-  	programs.sway = {
-		enable = true;
-		wrapperFeatures.gtk = true;
-		extraPackages = with pkgs; [
-			wl-clipboard 
-			alacritty
-		];
-		
-	};
 
-	xdg.portal.enable = true; 
-	xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-wlr ];
+   #NETWORKING#
+      networking.hostName = "nixos"; # Define your hostname.
+      networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+      networking.wireless.networks = {
+         #SSID = {                # SSID with no spaces or special characters
+         #  psk = "";
+         #};
+         "SSID" = {
+           psk = "";
+         };
+      };
+
+
+   #END NETWORKING#
+
+
+  #DISPLAY#
+        programs.sway = {
+                enable = true;
+                wrapperFeatures.gtk = true;
+                extraPackages = with pkgs; [
+                        wl-clipboard
+                        alacritty
+                ];
+
+        };
+
+        xdg.portal.enable = true;
+        xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-wlr ];
 
 
   #END DISPLAY#
+
 
   #PACKAGES#
     # List packages installed in system profile. To search, run:
@@ -176,18 +201,11 @@
       traceroute
       unar
       cryptsetup
+      light
+      wayland
+      bisq-desktop
     ];
   #END PACKAGES
 
-  #nix flakes (https://nixos.wiki/wiki/flakes#Installing_flakes)
-  nix = {
-  	package = pkgs.nixUnstable; #or versioned attributes like nix_2_4
-  	extraOptions = ''
-  		experimental-features = nix-command flakes
-  	'';
-  };
-
-
 
 }
-
