@@ -6,7 +6,16 @@
      # List packages installed in system profile. To search, run:
      # $ nix search wget
      nixpkgs.config.allowUnfree = true;
-
+     nixpkgs.config.packageOverrides = {
+       neofetch = pkgs.neofetch.override {
+         environment.etc = {
+            neofetch.source = /etc/nixos/modules/config.conf;
+         };
+	 environment.systemPackages = with pkgs; [
+	   neofetch
+	 ];
+       };
+     };
 
      environment.systemPackages = with pkgs; [
        #Package purposes
@@ -25,9 +34,11 @@
              koreader
              bisq-desktop
              #xen
+	     bitcoind-knots
 
           #Misc Utilities
              wget
+             ncftp
              dpkg
              file
              unzip
@@ -42,6 +53,10 @@
              gparted
              nix-index
              steam-run
+	     bind
+	     songrec
+             phototonic
+             #mmex
 
           #SORT ME PLSSS
              waypipe
