@@ -16,8 +16,30 @@
   # changes in each release.
   home.stateVersion = "22.11";
 
+  targets.genericLinux.enable = true;
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
   programs.bat.enable = true;
+
+  programs.git = {
+    enable = true;
+    userName  = "gregg00";
+    userEmail = "gregjsmith@gmx.com";
+  };
+
+
+  programs.bash = {
+    enable = true;
+    bashrcExtra = ''
+      . ~/.bashrc-old
+    '';
+  };
+
+
+  home.packages = [
+    pkgs.tmux
+  ];
+
 }
