@@ -51,6 +51,11 @@
       alias ll='ls -alF'
       alias la='ls -A'
       alias l='ls -CF'
+      alias diff='colordiff'
+      alias oports='netstat -tulanp'
+      alias wget='wget -c'
+
+
 
       # append to the history file, don't overwrite it
       shopt -s histappend
