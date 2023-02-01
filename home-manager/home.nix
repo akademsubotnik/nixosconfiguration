@@ -30,6 +30,17 @@
   }; 
 
 
+  programs.vim = {
+    enable = true;
+    extraConfig = ''
+      syntax on
+    '';
+  };
+
+  #Packages you want to install
+  home.packages = [
+    pkgs.tmux
+  ];
 
   programs.bash = {
     enable = true;
@@ -65,14 +76,6 @@
 
       #Have terminal name have color
       PS1='\e[32;1m\u@\h: \e[32m\W\e[32m\$ '
-
-
-      #Packages you want to install
-      home.packages = [
-        pkgs.tmux
-      ];
-
-
 
     '';
   };
