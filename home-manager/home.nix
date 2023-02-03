@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   # Home Manager needs a bit of information about you and the
@@ -34,13 +34,15 @@
     enable = true;
     extraConfig = ''
       syntax on
+      set number
     '';
   };
 
-  #Packages you want to install
-  home.packages = [
-    pkgs.tmux
-  ];
+    home.packages = [
+      pkgs.tmux
+      pkgs.awscli
+    ];
+
 
   programs.bash = {
     enable = true;
@@ -65,6 +67,18 @@
       alias diff='colordiff'
       alias oports='netstat -tulanp'
       alias wget='wget -c'
+      alias rpi='ssh greg@192.168.1.228'
+      alias sr='ssh root@192.168.1.1'
+
+
+      #1touch related aliases
+      alias s47='ssh ubuntu@10.192.192.47'
+      alias s48='ssh ubuntu@10.192.192.48'
+      alias s49='ssh ubuntu@10.192.192.49'
+      alias s53='ssh ubuntu@10.192.192.53'
+      alias s54='ssh ubuntu@10.192.192.54'
+      alias s55='ssh ubuntu@10.192.192.55'
+      
 
 
 
