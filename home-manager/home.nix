@@ -18,10 +18,8 @@
 
   targets.genericLinux.enable = true;
 
-
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-
 
   programs.git = {
     enable = true;
@@ -41,6 +39,9 @@
     home.packages = [
       pkgs.tmux
       pkgs.awscli
+      pkgs.prometheus
+      pkgs.unixtools.route
+      pkgs.cryptsetup
     ];
 
 
@@ -70,17 +71,13 @@
       alias rpi='ssh greg@192.168.1.228'
       alias sr='ssh root@192.168.1.1'
 
-
       #1touch related aliases
       alias s47='ssh ubuntu@10.192.192.47'
       alias s48='ssh ubuntu@10.192.192.48'
       alias s49='ssh ubuntu@10.192.192.49'
       alias s53='ssh ubuntu@10.192.192.53'
       alias s54='ssh ubuntu@10.192.192.54'
-      alias s55='ssh ubuntu@10.192.192.55'
-      
-
-
+      alias s55='ssh ubuntu@10.192.192.55'      
 
       # append to the history file, don't overwrite it
       shopt -s histappend
