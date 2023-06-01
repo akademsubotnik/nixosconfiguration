@@ -6,71 +6,72 @@
   <body>
     <p>This is the nix configuration that I use.  I have both the NixOS configurations for using nix as primary OS and for using nix on a non-nixos OS </p>
     <p><b>nix configuration as primary OS</b></p>
-    # Edit this configuration file to define what should be installed on
-    # your system.  Help is available in the configuration.nix(5) man page
-    # and in the NixOS manual (accessible by running ‘nixos-help’).
+   <pre><code><span class="hljs-comment"># Edit this configuration file to define what should be installed on</span>
+<span class="hljs-comment"># your system.  Help is available in the configuration.nix(5) man page</span>
+<span class="hljs-comment"># and in the NixOS manual (accessible by running ‘nixos-help’).</span>
 
-    { config, pkgs, ... }:
+{ config, pkgs, ... }:
 
-    {
-      imports =
-        [ # Include the results of the hardware scan.
-          ./hardware-configuration.nix
-          ./modules/network.nix
-          ./modules/display.nix
-          ./modules/packages.nix
-          ./modules/misc.nix
-        ];
+{
+  <span class="hljs-attr">imports</span> =
+    [ <span class="hljs-comment"># Include the results of the hardware scan.</span>
+      ./hardware-configuration.nix
+      ./modules/network.nix
+      ./modules/display.nix
+      ./modules/packages.nix
+      ./modules/misc.nix
+    ];
 
-    #KERNEL/BOOTUP#
+<span class="hljs-comment">#KERNEL/BOOTUP#</span>
 
-      # Use the systemd-boot EFI boot loader.
-      boot.loader.efi.canTouchEfiVariables = true;
-      boot.loader.efi.efiSysMountPoint = "/boot/efi";
-      boot.loader.grub = {
-        enable = true;
-        device = "nodev";
-        version = 2;
-        efiSupport = true;
-        enableCryptodisk = true;
-      };
-  
-      boot.initrd = {
-        luks.devices."root" = {
-          device = "/dev/disk/by-uuid/eee08ded-d73d-478f-b593-c47c62646cfe"; # UUID for /dev/nvme01np2 
-          preLVM = true;
-          keyFile = "/keyfile0.bin";
-          allowDiscards = true;
-        };
-        secrets = {
-          # Create /mnt/etc/secrets/initrd directory and copy keys to it
-          "keyfile0.bin" = "/etc/secrets/initrd/keyfile0.bin";
-        };
+  <span class="hljs-comment"># Use the systemd-boot EFI boot loader.</span>
+  boot.loader.efi.<span class="hljs-attr">canTouchEfiVariables</span> = <span class="hljs-literal">true</span>;
+  boot.loader.efi.<span class="hljs-attr">efiSysMountPoint</span> = <span class="hljs-string">"/boot/efi"</span>;
+  boot.loader.<span class="hljs-attr">grub</span> = {
+    <span class="hljs-attr">enable</span> = <span class="hljs-literal">true</span>;
+    <span class="hljs-attr">device</span> = <span class="hljs-string">"nodev"</span>;
+    <span class="hljs-attr">version</span> = <span class="hljs-number">2</span>;
+    <span class="hljs-attr">efiSupport</span> = <span class="hljs-literal">true</span>;
+    <span class="hljs-attr">enableCryptodisk</span> = <span class="hljs-literal">true</span>;
+  };
+
+  boot.<span class="hljs-attr">initrd</span> = {
+    luks.devices.<span class="hljs-string">"root"</span> = {
+      <span class="hljs-attr">device</span> = <span class="hljs-string">"/dev/disk/by-uuid/eee08ded-d73d-478f-b593-c47c62646cfe"</span>; <span class="hljs-comment"># UUID for /dev/nvme01np2 </span>
+      <span class="hljs-attr">preLVM</span> = <span class="hljs-literal">true</span>;
+      <span class="hljs-attr">keyFile</span> = <span class="hljs-string">"/keyfile0.bin"</span>;
+      <span class="hljs-attr">allowDiscards</span> = <span class="hljs-literal">true</span>;
     };
+    <span class="hljs-attr">secrets</span> = {
+      <span class="hljs-comment"># Create /mnt/etc/secrets/initrd directory and copy keys to it</span>
+      <span class="hljs-string">"keyfile0.bin"</span> = <span class="hljs-string">"/etc/secrets/initrd/keyfile0.bin"</span>;
+    };
+};
 
-      boot.blacklistedKernelModules = [ "e1000e" ];
-      boot.kernelModules = [ "binder_linux" ];
-      boot.kernelPackages = pkgs.linuxPackages_xanmod;
+  boot.<span class="hljs-attr">blacklistedKernelModules</span> = [ <span class="hljs-string">"e1000e"</span> ];
+  boot.<span class="hljs-attr">kernelModules</span> = [ <span class="hljs-string">"binder_linux"</span> ];
+  boot.<span class="hljs-attr">kernelPackages</span> = pkgs.linuxPackages_xanmod;
 
-    #END KERNEL/BOOTUP#
+<span class="hljs-comment">#END KERNEL/BOOTUP#</span>
 
-      #MISC#
-      #./modules/misc.nix
-      #END MISC#
+  <span class="hljs-comment">#MISC#</span>
+  <span class="hljs-comment">#./modules/misc.nix</span>
+  <span class="hljs-comment">#END MISC#</span>
 
-      #NETWORKING#
-      #./modules/network.nix
-      #END NETWORKING#
+  <span class="hljs-comment">#NETWORKING#</span>
+  <span class="hljs-comment">#./modules/network.nix</span>
+  <span class="hljs-comment">#END NETWORKING#</span>
 
-      #DISPLAY#
-      #./modules/display.nix
-      #END DISPLAY#
+  <span class="hljs-comment">#DISPLAY#</span>
+  <span class="hljs-comment">#./modules/display.nix</span>
+  <span class="hljs-comment">#END DISPLAY#</span>
 
-      #PACKAGES#
-      #./modules/packages.nix
-      #END PACKAGES
+  <span class="hljs-comment">#PACKAGES#</span>
+  <span class="hljs-comment">#./modules/packages.nix</span>
+  <span class="hljs-comment">#END PACKAGES</span>
 
-    }
+}
+</code></pre>
 
   </body>
 </html>
