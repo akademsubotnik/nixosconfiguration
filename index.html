@@ -37,6 +37,7 @@
 
   boot.<span class="hljs-attr">initrd</span> = {
     luks.devices.<span class="hljs-string">"root"</span> = {
+      <span class="hljs-comment">#https://gist.github.com/ladinu/bfebdd90a5afd45dec811296016b2a3f</span>
       <span class="hljs-attr">device</span> = <span class="hljs-string">"/dev/disk/by-uuid/eee08ded-d73d-478f-b593-c47c62646cfe"</span>; <span class="hljs-comment"># UUID for /dev/nvme01np2 </span>
       <span class="hljs-attr">preLVM</span> = <span class="hljs-literal">true</span>;
       <span class="hljs-attr">keyFile</span> = <span class="hljs-string">"/keyfile0.bin"</span>;
